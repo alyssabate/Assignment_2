@@ -5,7 +5,28 @@ def load_data(filepath:str, column:int)->tuple[list, int]:
     # TODO - Complete the function so it loads the data from the file into a list
     # The function returns a tuple that contains the list of values and the total number 
     # of values in the column
-    pass
+    numbers = []
+    total_values = 0
+    filename = filepath.split("/")[-1]
+    with open (filepath, 'r') as infile:
+        for line in infile:
+            total_values = total_values + 1
+            parts = line.split("\t")
+            try:
+                value = parts[column]
+            except IndexError:
+                print(f"Exiting: There is no valid 'list index' in column {column} in line {total_values} in file: {filename}")
+                sys.exit()
+            try:
+                number = float(value)
+            except ValueError:
+                continue
+            if not math.isnan(number):
+                numbers.append(number)
+    if len(numbers) == 0:
+        print(f"Error: There were no valid numbers in column {column} in file: {filename}")
+        sys.exit()
+    return numbers, total_values
 
 def calculate_average(numbers:list)->float:
     # TODO - Complete the function to return the average of the list of numbers
